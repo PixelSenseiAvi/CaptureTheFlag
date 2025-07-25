@@ -1,0 +1,56 @@
+Shader "Custom/GlowingLine"
+{
+    Properties
+    {
+        _Color ("Glow Color", Color) = (1,1,1,1)
+        _Emission ("Emission Color", Color) = (1,1,1,1)
+        _EmissionIntensity ("Emission Intensity", Float) = 5.0
+    }
+    SubShader
+    {
+        Tags { "RenderType"="Transparent" "Queue"="Transparent" }
+        LOD 100
+
+        Blend SrcAlpha OneMinusSrcAlpha
+        ZWrite Off
+        Lighting Off
+        Cull Off
+
+        Pass
+        {
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #include "UnityCG.cginc"
+
+            struct appdata
+            {
+                float4 vertex : POSITION;
+            };
+
+            struct v2f
+            {
+                float4 pos : SV_POSITION;
+            };
+
+            float4 _Color;
+            float4 _Emission;
+            float _EmissionIntensity;
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                o.pos = UnityObjectToClipPos(v.vertex);
+                return o;
+            }
+
+            fixed4 frag(v2f i) : SV_Target
+            {
+                fixed4 col = _Color;
+                col.rgb += _Emission.rgb * _EmissionIntensity; // Add glow
+                return col;
+            }
+            ENDCG
+        }
+    }
+}
