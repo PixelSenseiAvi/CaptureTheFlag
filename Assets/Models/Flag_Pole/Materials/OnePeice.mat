@@ -45,8 +45,8 @@ Material:
     - _CullModeForward: 0
     - _DoubleSidedEnable: 1
     m_Colors:
-    - _BaseColor: {r: 0.94509804, g: 0.8179546, b: 0.031372547, a: 1}
-    - _Color: {r: 0.945098, g: 0.8179546, b: 0.031372547, a: 1}
+    - _BaseColor: {r: 0.96724814, g: 0.97165763, b: 0.9811321, a: 1}
+    - _Color: {r: 0.96724814, g: 0.9716576, b: 0.9811321, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &401404729571707087

@@ -1,9 +1,9 @@
 {
   "dependencies": {
+    "com.unity.ai.navigation": "2.0.8",
     "com.unity.cinemachine": "3.1.4",
     "com.unity.collab-proxy": "2.8.2",
     "com.unity.feature.development": "1.0.2",
-    "com.unity.ml-agents": "3.0.0",
     "com.unity.ml-agents.extensions": "git+https://github.com/Unity-Technologies/ml-agents.git?path=com.unity.ml-agents.extensions#release_22",
     "com.unity.multiplayer.center": "1.0.0",
     "com.unity.postprocessing": "3.4.0",

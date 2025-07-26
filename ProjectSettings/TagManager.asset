@@ -13,6 +13,12 @@ TagManager:
   - TeamB
   - BaseB
   - Agent
+  - YellowFlag
+  - BlueFlag
+  - BlueAgent
+  - YellowAgent
+  - BlueBase
+  - YellowBase
   layers:
   - Default
   - TransparentFX
@@ -20,9 +26,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - YellowTeam
+  - BlueTeam
+  - FlagLayer
   - 
   - 
   - 
