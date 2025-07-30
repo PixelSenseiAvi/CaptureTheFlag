@@ -29,7 +29,7 @@ public class CaptureAgent : Agent
         rb.linearVelocity = move * moveSpeed;
 
         // Tiny time penalty so it learns to finish quickly
-        AddReward(-1f / MaxStep);
+        /*AddReward(-1f / MaxStep);*/ AddReward(MaxStep > 0 ? -1f / MaxStep : -0.001f);
     }
 
     public override void Heuristic(in ActionBuffers a)

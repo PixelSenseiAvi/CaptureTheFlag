@@ -1,0 +1,29 @@
+{
+    "CaptureFlag": {
+        "checkpoints": [
+            {
+                "steps": 6656,
+                "file_path": "results\\2\\CaptureFlag\\CaptureFlag-6656.onnx",
+                "reward": null,
+                "creation_time": 1753864969.550081,
+                "auxillary_file_paths": [
+                    "results\\2\\CaptureFlag\\CaptureFlag-6656.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 6656,
+            "file_path": "results\\2\\CaptureFlag.onnx",
+            "reward": null,
+            "creation_time": 1753864969.550081,
+            "auxillary_file_paths": [
+                "results\\2\\CaptureFlag\\CaptureFlag-6656.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.7.0+cpu"
+    }
+}
