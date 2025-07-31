@@ -19,6 +19,7 @@ TagManager:
   - YellowAgent
   - BlueBase
   - YellowBase
+  - Base
   layers:
   - Default
   - TransparentFX
