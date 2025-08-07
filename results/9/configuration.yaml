@@ -1,10 +1,10 @@
 default_settings: null
 behaviors:
-  CaptureFlag:
+  CaptureAgent:
     trainer_type: ppo
     hyperparameters:
-      batch_size: 128
-      buffer_size: 2048
+      batch_size: 1024
+      buffer_size: 10240
       learning_rate: 0.0003
       beta: 0.005
       epsilon: 0.2
@@ -40,7 +40,7 @@ behaviors:
     even_checkpoints: false
     max_steps: 500000
     time_horizon: 64
-    summary_freq: 10000
+    summary_freq: 50000
     threaded: false
     self_play: null
     behavioral_cloning: null
@@ -66,12 +66,12 @@ engine_settings:
   no_graphics_monitor: false
 environment_parameters: null
 checkpoint_settings:
-  run_id: '8'
+  run_id: '9'
   initialize_from: null
   load_model: false
   resume: false
   force: false
-  train_model: true
+  train_model: false
   inference: false
   results_dir: results
 torch_settings:
