@@ -20,6 +20,7 @@ TagManager:
   - BlueBase
   - YellowBase
   - Base
+  - Wall
   layers:
   - Default
   - TransparentFX

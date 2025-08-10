@@ -1,0 +1,29 @@
+{
+    "CaptureAgent": {
+        "checkpoints": [
+            {
+                "steps": 39900,
+                "file_path": "results\\7\\CaptureAgent\\CaptureAgent-39900.onnx",
+                "reward": 0.4514153566091291,
+                "creation_time": 1754592423.7373602,
+                "auxillary_file_paths": [
+                    "results\\7\\CaptureAgent\\CaptureAgent-39900.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 39900,
+            "file_path": "results\\7\\CaptureAgent.onnx",
+            "reward": 0.4514153566091291,
+            "creation_time": 1754592423.7373602,
+            "auxillary_file_paths": [
+                "results\\7\\CaptureAgent\\CaptureAgent-39900.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.7.0+cpu"
+    }
+}

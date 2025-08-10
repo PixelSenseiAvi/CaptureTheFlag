@@ -11572,10 +11572,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f61db0320607b34d8bb9c49f0f06535, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1: {fileID: 7426592590450606493}
-  player2: {fileID: 1597325735}
-  player1TMP: {fileID: 1919994735}
-  player2TMP: {fileID: 395017743}
 --- !u!4 &621152252
 Transform:
   m_ObjectHideFlags: 0
@@ -29949,6 +29945,7 @@ MonoBehaviour:
   MaxStep: 0
   targetTransform: {fileID: 0}
   moveSpeed: 1
+  distanceRewardScale: 1
 --- !u!114 &1597325734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29976,11 +29973,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daf7a60278d658647bc0e5f066dcf244, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: Player 2
-  score: 0
-  onScoreChanged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1597451872
 GameObject:
   m_ObjectHideFlags: 0
@@ -35245,7 +35237,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1833239929
 Transform:
   m_ObjectHideFlags: 0
@@ -42627,10 +42619,9 @@ GameObject:
   - component: {fileID: 813977752984823408}
   - component: {fileID: 134612122983545031}
   - component: {fileID: 3367204251897257610}
-  - component: {fileID: 5497877829202007850}
   - component: {fileID: 7426592590450606491}
   - component: {fileID: 7426592590450606492}
-  - component: {fileID: 7426592590450606493}
+  - component: {fileID: 7426592590450606494}
   m_Layer: 7
   m_Name: MazeAgentA1
   m_TagString: BlueAgent
@@ -47659,7 +47650,7 @@ GameObject:
   - component: {fileID: 4420098168266417032}
   m_Layer: 0
   m_Name: OuterWall1
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49227,7 +49218,7 @@ GameObject:
   - component: {fileID: 8869010374530689479}
   m_Layer: 0
   m_Name: OuterWall1 (1)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52340,7 +52331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 6
+    VectorObservationSize: 3
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 2
@@ -59547,36 +59538,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1161505569324754219}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5497877829202007850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 353168276470276020}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SensorName: RayPerceptionSensorA1
-  m_DetectableTags:
-  - OuterWall
-  - TeamB
-  m_RaysPerDirection: 3
-  m_MaxRayDegrees: 70
-  m_SphereCastRadius: 0.5
-  m_RayLength: 20
-  m_RayLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967291
-  m_ObservationStacks: 1
-  m_AlternatingRayOrder: 1
-  m_UseBatchedRaycasts: 0
-  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
-  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
-  m_StartVerticalOffset: 0
-  m_EndVerticalOffset: 0
 --- !u!1 &5498614199575160002
 GameObject:
   m_ObjectHideFlags: 0
@@ -60556,7 +60517,7 @@ GameObject:
   - component: {fileID: 5809036914382036315}
   m_Layer: 0
   m_Name: OuterWall1 (2)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -61674,7 +61635,7 @@ GameObject:
   - component: {fileID: 8325242459857848191}
   m_Layer: 0
   m_Name: OuterWall1 (3)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65793,6 +65754,7 @@ MonoBehaviour:
   MaxStep: 0
   targetTransform: {fileID: 4675291020767796237}
   moveSpeed: 1
+  distanceRewardScale: 10
 --- !u!114 &7426592590450606492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65808,7 +65770,7 @@ MonoBehaviour:
   DecisionPeriod: 5
   DecisionStep: 0
   TakeActionsBetweenDecisions: 1
---- !u!114 &7426592590450606493
+--- !u!114 &7426592590450606494
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65817,14 +65779,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 353168276470276020}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daf7a60278d658647bc0e5f066dcf244, type: 3}
+  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: Player 1
-  score: 0
-  onScoreChanged:
-    m_PersistentCalls:
-      m_Calls: []
+  m_SensorName: RayPerceptionSensor
+  m_DetectableTags:
+  - YellowFlag
+  - Wall
+  m_RaysPerDirection: 3
+  m_MaxRayDegrees: 70
+  m_SphereCastRadius: 0.5
+  m_RayLength: 20
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  m_ObservationStacks: 1
+  m_AlternatingRayOrder: 1
+  m_UseBatchedRaycasts: 0
+  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_StartVerticalOffset: 0
+  m_EndVerticalOffset: 0
 --- !u!1 &7432228014221726046
 GameObject:
   m_ObjectHideFlags: 0
