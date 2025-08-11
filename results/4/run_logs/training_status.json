@@ -2,22 +2,22 @@
     "CaptureAgent": {
         "checkpoints": [
             {
-                "steps": 19008,
-                "file_path": "results\\4\\CaptureAgent\\CaptureAgent-19008.onnx",
-                "reward": null,
-                "creation_time": 1754894612.8096085,
+                "steps": 6244,
+                "file_path": "results\\4\\CaptureAgent\\CaptureAgent-6244.onnx",
+                "reward": 235.05821061134338,
+                "creation_time": 1754912367.6474988,
                 "auxillary_file_paths": [
-                    "results\\4\\CaptureAgent\\CaptureAgent-19008.pt"
+                    "results\\4\\CaptureAgent\\CaptureAgent-6244.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 19008,
+            "steps": 6244,
             "file_path": "results\\4\\CaptureAgent.onnx",
-            "reward": null,
-            "creation_time": 1754894612.8096085,
+            "reward": 235.05821061134338,
+            "creation_time": 1754912367.6474988,
             "auxillary_file_paths": [
-                "results\\4\\CaptureAgent\\CaptureAgent-19008.pt"
+                "results\\4\\CaptureAgent\\CaptureAgent-6244.pt"
             ]
         }
     },

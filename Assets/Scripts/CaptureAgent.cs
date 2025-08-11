@@ -54,6 +54,7 @@ public class CaptureAgent : Agent
 
     public override void OnEpisodeBegin()
     {
+        Debug.Log("OnEpisode begin");
         // Reset position & velocity
         transform.position = GetRandomSpawnPosition();
         transform.rotation = startRotation;
@@ -175,6 +176,7 @@ public class CaptureAgent : Agent
 
     private void OnTriggerEnter(Collider other)
     {
+            Debug.Log($"On trigger enter object name is {other.name} ");
         if (other.TryGetComponent<Goal>(out _))
         {
             AddReward(1.0f);
