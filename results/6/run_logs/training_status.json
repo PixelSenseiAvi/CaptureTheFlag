@@ -1,0 +1,73 @@
+{
+    "CaptureAgent2": {
+        "checkpoints": [
+            {
+                "steps": 2240,
+                "file_path": "results\\6\\CaptureAgent2\\CaptureAgent2-2240.onnx",
+                "reward": null,
+                "creation_time": 1755246730.3118162,
+                "auxillary_file_paths": [
+                    "results\\6\\CaptureAgent2\\CaptureAgent2-2240.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 2240,
+            "file_path": "results\\6\\CaptureAgent2.onnx",
+            "reward": null,
+            "creation_time": 1755246730.3118162,
+            "auxillary_file_paths": [
+                "results\\6\\CaptureAgent2\\CaptureAgent2-2240.pt"
+            ]
+        }
+    },
+    "CaptureAgent": {
+        "checkpoints": [
+            {
+                "steps": 2240,
+                "file_path": "results\\6\\CaptureAgent\\CaptureAgent-2240.onnx",
+                "reward": null,
+                "creation_time": 1755246730.5647438,
+                "auxillary_file_paths": [
+                    "results\\6\\CaptureAgent\\CaptureAgent-2240.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 2240,
+            "file_path": "results\\6\\CaptureAgent.onnx",
+            "reward": null,
+            "creation_time": 1755246730.5647438,
+            "auxillary_file_paths": [
+                "results\\6\\CaptureAgent\\CaptureAgent-2240.pt"
+            ]
+        }
+    },
+    "CaptureAgent1": {
+        "checkpoints": [
+            {
+                "steps": 2240,
+                "file_path": "results\\6\\CaptureAgent1\\CaptureAgent1-2240.onnx",
+                "reward": null,
+                "creation_time": 1755246730.6227522,
+                "auxillary_file_paths": [
+                    "results\\6\\CaptureAgent1\\CaptureAgent1-2240.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 2240,
+            "file_path": "results\\6\\CaptureAgent1.onnx",
+            "reward": null,
+            "creation_time": 1755246730.6227522,
+            "auxillary_file_paths": [
+                "results\\6\\CaptureAgent1\\CaptureAgent1-2240.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.7.0+cpu"
+    }
+}

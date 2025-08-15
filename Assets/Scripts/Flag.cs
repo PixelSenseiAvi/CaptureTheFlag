@@ -3,11 +3,11 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Flag : MonoBehaviour
 {
-    [Tooltip("Reward given to the agent that picks up this flag")]
-    [SerializeField] private float pickupReward = 1.0f;
+    //[Tooltip("Reward given to the agent that picks up this flag")]
+    //[SerializeField] private float pickupReward = 1.0f;
 
-    [Tooltip("Flag On/Off")]
-    [SerializeField] public SkinnedMeshRenderer flagCloth;
+    //[Tooltip("Flag On/Off")]
+    //[SerializeField] public SkinnedMeshRenderer flagCloth;
 
 
 

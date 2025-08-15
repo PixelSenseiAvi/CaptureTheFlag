@@ -1,4 +1,4 @@
-using Unity.MLAgents;
+﻿using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using UnityEngine;
@@ -39,6 +39,7 @@ public class CaptureAgent : Agent
 
     public GameObject flagCaptured;
     private float endEpisodeTime = -1f;
+    public GameObject originalFlag;
 
     /* ----------------------------------------------------------- */
     /*  Life-cycle                                                 */
@@ -47,8 +48,8 @@ public class CaptureAgent : Agent
     private void Awake()
     {
         rb = GetComponent<Rigidbody>(); // Cache Rigidbody
-        startPosition = transform.position;
-        startRotation = transform.rotation;
+        startPosition = transform.localPosition;
+        startRotation = transform.localRotation;
         if (!homeBase) homeBase = transform;
     }
 
@@ -56,13 +57,13 @@ public class CaptureAgent : Agent
     {
         Debug.Log("OnEpisode begin");
         // Reset position & velocity
-        transform.position = GetRandomSpawnPosition();
-        transform.rotation = startRotation;
+        transform.localPosition = GetRandomSpawnPosition();
+        transform.localRotation = startRotation;
 
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
-        lastDistance = Vector3.Distance(transform.position, targetTransform.position);
+        lastDistance = Vector3.Distance(transform.localPosition, targetTransform.localPosition);
         hasReachedOpponentSide = false;
 
         flagCaptured.SetActive(false);
@@ -88,7 +89,7 @@ public class CaptureAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        Vector3 toGoal = targetTransform.position - transform.position;
+        Vector3 toGoal = targetTransform.localPosition - transform.localPosition;
         Vector3 local = transform.InverseTransformDirection(toGoal.normalized);
         sensor.AddObservation(local.x);   // left/right
         sensor.AddObservation(local.z);   // forward(+) / backward(-)
@@ -105,22 +106,22 @@ public class CaptureAgent : Agent
         float moveX = actions.ContinuousActions[0];
         float moveZ = actions.ContinuousActions[1];
 
-        Vector3 move = new Vector3(moveX, 0f, moveZ).normalized;
-        Vector3 newPosition = transform.position + move * Time.deltaTime * moveSpeed;
+        Vector3 move = new Vector3(-moveX, 0f, moveZ).normalized;
+        Vector3 newPosition = transform.localPosition + move * Time.deltaTime * moveSpeed;
 
         // Apply boundary constraints
         newPosition = ClampPositionToBoundary(newPosition);
 
         // Apply boundary penalty if hitting edge
-        if (newPosition.x == transform.position.x || newPosition.z == transform.position.z)
+        if (newPosition.x == transform.localPosition.x || newPosition.z == transform.localPosition.z)
         {
             AddReward(-boundaryPenalty);
         }
 
-        transform.position = newPosition;
+        transform.localPosition = newPosition;
 
         // 1. Calculate distance reward
-        float newDistance = Vector3.Distance(transform.position, targetTransform.position);
+        float newDistance = Vector3.Distance(transform.localPosition, targetTransform.localPosition);
         float distanceDelta = lastDistance - newDistance;
 
         // Scale reward based on progress
@@ -159,8 +160,8 @@ public class CaptureAgent : Agent
 
         // Check if agent has crossed to the opponent's side
         return opponentSideIsTop ?
-            transform.position.z > midpointZ :
-            transform.position.z < midpointZ;
+            transform.localPosition.z > midpointZ :
+            transform.localPosition.z < midpointZ;
     }
 
     /* ----------------------------------------------------------- */
@@ -176,12 +177,12 @@ public class CaptureAgent : Agent
 
     private void OnTriggerEnter(Collider other)
     {
-            Debug.Log($"On trigger enter object name is {other.name} ");
+        Debug.Log($"On trigger enter object name is {other.name} ");
         if (other.TryGetComponent<Goal>(out _))
         {
             AddReward(1.0f);
             flagCaptured.SetActive(true);
-            targetTransform.gameObject.SetActive(false);
+            originalFlag.SetActive(false);
 
 
             endEpisodeTime = Time.time + 1.5f;
@@ -192,15 +193,15 @@ public class CaptureAgent : Agent
         if (other.TryGetComponent<Wall>(out _))
         {
             AddReward(-0.25f);
-            Vector3 pushDir = (transform.position - other.ClosestPoint(transform.position)).normalized;
+            Vector3 pushDir = (transform.localPosition - other.ClosestPoint(transform.localPosition)).normalized;
             pushDir.y = 0;
             GetComponent<Rigidbody>().AddForce(pushDir * bounceForce, ForceMode.VelocityChange);
 
-            Vector3 newPos = RandomPointNear(transform.position, respawnRadius);
+            Vector3 newPos = RandomPointNear(transform.localPosition, respawnRadius);
             if (ValidFloor(newPos))
-                transform.position = newPos;
+                transform.localPosition = newPos;
             else
-                transform.position = startPosition;
+                transform.localPosition = startPosition;
         }
     }
 
