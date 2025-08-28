@@ -37,9 +37,36 @@ public class CaptureAgent : Agent
     private Rigidbody rb;
     private Quaternion startRotation;
 
+    private bool isFlagCaptured = false;
     public GameObject flagCaptured;
     private float endEpisodeTime = -1f;
     public GameObject originalFlag;
+
+
+    private bool isTurning = false;
+    private Quaternion turnStartRotation;
+    private Quaternion turnTargetRotation;
+    private float turnProgress = 0f;
+    private float turnDuration = 1f; // seconds to complete the turn
+
+    [Header("Wall Collision Settings")]
+    [SerializeField] private WallCollisionMode collisionMode = WallCollisionMode.Bounce;
+    [SerializeField] private float bouncePenalty = 0.25f;     // penalty for bouncing
+    [SerializeField] private float respawnPenalty = 0.5f;     // penalty for respawn
+    [SerializeField] private int maxWallHitsBeforeRespawn = 3;
+    [SerializeField] private float wallHitWindow = 2f; // seconds to count hits
+
+    private int wallHitCount = 0;
+    private float lastWallHitTime = 0f;
+
+    [SerializeField] private float xDivergenceFactor = 0.3f; // small sidestep influence
+
+
+    public enum WallCollisionMode
+    {
+        Bounce,
+        Respawn
+    }
 
     /* ----------------------------------------------------------- */
     /*  Life-cycle                                                 */
@@ -68,6 +95,8 @@ public class CaptureAgent : Agent
 
         flagCaptured.SetActive(false);
         targetTransform.gameObject.SetActive(true);
+
+        isFlagCaptured = false;
     }
 
     private Vector3 GetRandomSpawnPosition()
@@ -102,42 +131,79 @@ public class CaptureAgent : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        // Handle movement
-        float moveX = actions.ContinuousActions[0];
-        float moveZ = actions.ContinuousActions[1];
+        float moveX = actions.ContinuousActions[0] * xDivergenceFactor; // scaled divergence
+        float moveZ = actions.ContinuousActions[1]; // main forward/back axis
 
-        Vector3 move = new Vector3(-moveX, 0f, moveZ).normalized;
-        Vector3 newPosition = transform.localPosition + move * Time.deltaTime * moveSpeed;
-
-        // Apply boundary constraints
-        newPosition = ClampPositionToBoundary(newPosition);
-
-        // Apply boundary penalty if hitting edge
-        if (newPosition.x == transform.localPosition.x || newPosition.z == transform.localPosition.z)
+        if (!flagCaptured)
         {
-            AddReward(-boundaryPenalty);
+            Vector3 move = new Vector3(moveX, 0f, moveZ).normalized;
+            Vector3 newPosition = transform.localPosition + move * Time.deltaTime * moveSpeed;
+
+            // Clamp inside boundaries
+            newPosition = ClampPositionToBoundary(newPosition);
+
+            // Boundary penalty
+            if (newPosition.x == transform.localPosition.x || newPosition.z == transform.localPosition.z)
+            {
+                AddReward(-boundaryPenalty);
+            }
+
+            transform.localPosition = newPosition;
+
+            // Distance reward
+            float newDistance = Vector3.Distance(transform.localPosition, targetTransform.localPosition);
+            float distanceDelta = lastDistance - newDistance;
+
+            float progressReward = Mathf.Clamp(
+                distanceDelta * distanceRewardScale,
+                minDistanceReward,
+                maxDistanceReward
+            );
+            AddReward(progressReward);
+            lastDistance = newDistance;
+
+            if (!hasReachedOpponentSide && IsOnOpponentSide())
+            {
+                AddReward(opponentSideReward);
+                hasReachedOpponentSide = true;
+            }
         }
-
-        transform.localPosition = newPosition;
-
-        // 1. Calculate distance reward
-        float newDistance = Vector3.Distance(transform.localPosition, targetTransform.localPosition);
-        float distanceDelta = lastDistance - newDistance;
-
-        // Scale reward based on progress
-        float progressReward = Mathf.Clamp(
-            distanceDelta * distanceRewardScale,
-            minDistanceReward,
-            maxDistanceReward
-        );
-        AddReward(progressReward);
-        lastDistance = newDistance;
-
-        // 2. Check for opponent side entry
-        if (!hasReachedOpponentSide && IsOnOpponentSide())
+        else
         {
-            AddReward(opponentSideReward);
-            hasReachedOpponentSide = true;
+            // Return to base
+            Vector3 toHome = homeBase.localPosition - transform.localPosition;
+
+            // Prioritize Z movement, allow small X divergence
+            float moveXHome = Mathf.Sign(toHome.x) * xDivergenceFactor;
+            float moveZHome = Mathf.Sign(toHome.z);
+
+            Vector3 move = new Vector3(-moveXHome, 0f, -moveZHome).normalized;
+            Vector3 newPosition = transform.localPosition + move * Time.deltaTime * moveSpeed;
+
+            newPosition = ClampPositionToBoundary(newPosition);
+
+            if (newPosition.x == transform.localPosition.x || newPosition.z == transform.localPosition.z)
+            {
+                AddReward(-boundaryPenalty);
+            }
+
+            transform.localPosition = newPosition;
+
+            float newDistanceHome = Vector3.Distance(transform.localPosition, homeBase.localPosition);
+            float distanceDeltaHome = lastDistance - newDistanceHome;
+
+            float progressRewardHome = Mathf.Clamp(
+                distanceDeltaHome * distanceRewardScale,
+                minDistanceReward,
+                maxDistanceReward
+            );
+            AddReward(progressRewardHome);
+            lastDistance = newDistanceHome;
+
+            if (newDistanceHome < 0.5f)
+            {
+                EndEpisode();
+            }
         }
     }
 
@@ -177,36 +243,106 @@ public class CaptureAgent : Agent
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"On trigger enter object name is {other.name} ");
         if (other.TryGetComponent<Goal>(out _))
         {
             AddReward(1.0f);
             flagCaptured.SetActive(true);
             originalFlag.SetActive(false);
 
-
+            isFlagCaptured = true;
             endEpisodeTime = Time.time + 1.5f;
-            EndEpisode();
+            StartEpisode2();
             return;
         }
 
-        if (other.TryGetComponent<Wall>(out _))
+        if (Time.time - lastWallHitTime > wallHitWindow)
         {
-            AddReward(-0.25f);
+            wallHitCount = 0;
+        }
+
+        wallHitCount++;
+        lastWallHitTime = Time.time;
+
+        bool forceRespawn = wallHitCount >= maxWallHitsBeforeRespawn;
+
+        if (collisionMode == WallCollisionMode.Bounce && !forceRespawn)
+        {
+            // Bounce with small penalty
+            AddReward(-bouncePenalty);
+
             Vector3 pushDir = (transform.localPosition - other.ClosestPoint(transform.localPosition)).normalized;
             pushDir.y = 0;
-            GetComponent<Rigidbody>().AddForce(pushDir * bounceForce, ForceMode.VelocityChange);
+            rb.AddForce(pushDir * bounceForce, ForceMode.VelocityChange);
+        }
+        else
+        {
+            // Respawn with bigger penalty
+            AddReward(-respawnPenalty);
 
-            Vector3 newPos = RandomPointNear(transform.localPosition, respawnRadius);
+            Vector3 newPos = RandomPointNear(startPosition, respawnRadius);
             if (ValidFloor(newPos))
                 transform.localPosition = newPos;
             else
                 transform.localPosition = startPosition;
+
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+
+            wallHitCount = 0; // reset counter after respawn
         }
+    }
+
+
+    private void StartEpisode2()
+    {
+        isTurning = true;
+        turnProgress = 0f;
+
+        turnStartRotation = transform.rotation;
+        turnTargetRotation = turnStartRotation * Quaternion.Euler(0, 180f, 0);
+
+        StartCoroutine(ReturnToBase());
+    }
+
+    IEnumerator ReturnToBase()
+    {
+        yield return new WaitWhile(() => isTurning);
+
+        //float moveDuration = 2f;
+        //float elapsed = 0f;
+        //Vector3 start = transform.position;
+        //Vector3 end = homeBase.position;
+
+        //while (elapsed < moveDuration)
+        //{
+        //    transform.position = Vector3.Lerp(start, end, elapsed / moveDuration);
+        //    elapsed += Time.deltaTime;
+        //    yield return null;
+        //}
+
+        //transform.position = end;
+        EndEpisode();
+    }
+
+    private void EndEpisode2_()
+    { 
+    
     }
 
     private void Update()
     {
+        // Smooth turning
+        if (isTurning)
+        {
+            turnProgress += Time.deltaTime / turnDuration;
+            transform.rotation = Quaternion.Slerp(turnStartRotation, turnTargetRotation, turnProgress);
+
+            if (turnProgress >= 1f)
+            {
+                isTurning = false;
+            }
+        }
+
         if (endEpisodeTime > 0 && Time.time > endEpisodeTime)
         {
             EndEpisode();

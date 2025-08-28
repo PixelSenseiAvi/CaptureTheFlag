@@ -82695,7 +82695,7 @@ MonoBehaviour:
   m_InferenceDevice: 2
   m_BehaviorType: 0
   m_BehaviorName: CaptureAgent2
-  TeamId: 1
+  TeamId: 3
   m_UseChildSensors: 1
   m_UseChildActuators: 1
   m_DeterministicInference: 0
@@ -102795,7 +102795,7 @@ MonoBehaviour:
   m_InferenceDevice: 2
   m_BehaviorType: 0
   m_BehaviorName: CaptureAgent1
-  TeamId: 1
+  TeamId: 2
   m_UseChildSensors: 1
   m_UseChildActuators: 1
   m_DeterministicInference: 0
@@ -152915,7 +152915,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1307645705}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 353aaeb29d63dc44cb4c23a0f2cdbc56, type: 3}
   m_Name: 
@@ -205736,7 +205736,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1740278091}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 353aaeb29d63dc44cb4c23a0f2cdbc56, type: 3}
   m_Name: 
