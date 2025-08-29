@@ -37,9 +37,8 @@ public class CaptureAgent : Agent
     private Rigidbody rb;
     private Quaternion startRotation;
 
-    private bool isFlagCaptured = false;
     public GameObject flagCaptured;
-    private float endEpisodeTime = -1f;
+    //  private float endEpisodeTime = -1f;
     public GameObject originalFlag;
 
 
@@ -58,6 +57,7 @@ public class CaptureAgent : Agent
 
     private int wallHitCount = 0;
     private float lastWallHitTime = 0f;
+    private bool hasRotatedAfterCapture = false;
 
     [SerializeField] private float xDivergenceFactor = 0.3f; // small sidestep influence
 
@@ -96,7 +96,7 @@ public class CaptureAgent : Agent
         flagCaptured.SetActive(false);
         targetTransform.gameObject.SetActive(true);
 
-        isFlagCaptured = false;
+        hasRotatedAfterCapture = false;
     }
 
     private Vector3 GetRandomSpawnPosition()
@@ -202,6 +202,7 @@ public class CaptureAgent : Agent
 
             if (newDistanceHome < 0.5f)
             {
+                AddReward(1f);        // bonus for getting home
                 EndEpisode();
             }
         }
@@ -249,9 +250,13 @@ public class CaptureAgent : Agent
             flagCaptured.SetActive(true);
             originalFlag.SetActive(false);
 
-            isFlagCaptured = true;
-            endEpisodeTime = Time.time + 1.5f;
-            StartEpisode2();
+            //endEpisodeTime = Time.time + 1.5f;
+            if (!hasRotatedAfterCapture)
+            {
+                StartEpisode2();
+                hasRotatedAfterCapture = true;
+            }
+
             return;
         }
 
@@ -301,33 +306,9 @@ public class CaptureAgent : Agent
         turnStartRotation = transform.rotation;
         turnTargetRotation = turnStartRotation * Quaternion.Euler(0, 180f, 0);
 
-        StartCoroutine(ReturnToBase());
+        //StartCoroutine(ReturnToBase());
     }
 
-    IEnumerator ReturnToBase()
-    {
-        yield return new WaitWhile(() => isTurning);
-
-        //float moveDuration = 2f;
-        //float elapsed = 0f;
-        //Vector3 start = transform.position;
-        //Vector3 end = homeBase.position;
-
-        //while (elapsed < moveDuration)
-        //{
-        //    transform.position = Vector3.Lerp(start, end, elapsed / moveDuration);
-        //    elapsed += Time.deltaTime;
-        //    yield return null;
-        //}
-
-        //transform.position = end;
-        EndEpisode();
-    }
-
-    private void EndEpisode2_()
-    { 
-    
-    }
 
     private void Update()
     {
@@ -343,11 +324,11 @@ public class CaptureAgent : Agent
             }
         }
 
-        if (endEpisodeTime > 0 && Time.time > endEpisodeTime)
-        {
-            EndEpisode();
-            endEpisodeTime = -1f;
-        }
+        //if (endEpisodeTime > 0 && Time.time > endEpisodeTime)
+        //{
+        //    EndEpisode();
+        //    endEpisodeTime = -1f;
+        //}
     }
 
     /* ----------------------------------------------------------- */

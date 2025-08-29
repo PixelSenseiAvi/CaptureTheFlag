@@ -51601,6 +51601,12 @@ MonoBehaviour:
     m_Bits: 1
   flagCaptured: {fileID: 0}
   originalFlag: {fileID: 0}
+  collisionMode: 0
+  bouncePenalty: 0.25
+  respawnPenalty: 0.5
+  maxWallHitsBeforeRespawn: 3
+  wallHitWindow: 2
+  xDivergenceFactor: 0.3
 --- !u!195 &440196303
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -82078,6 +82084,12 @@ MonoBehaviour:
     m_Bits: 1
   flagCaptured: {fileID: 0}
   originalFlag: {fileID: 0}
+  collisionMode: 0
+  bouncePenalty: 0.25
+  respawnPenalty: 0.5
+  maxWallHitsBeforeRespawn: 3
+  wallHitWindow: 2
+  xDivergenceFactor: 0.3
 --- !u!195 &697415425
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -82669,6 +82681,12 @@ MonoBehaviour:
     m_Bits: 1
   flagCaptured: {fileID: 1660122982}
   originalFlag: {fileID: 1307645705}
+  collisionMode: 0
+  bouncePenalty: 0.25
+  respawnPenalty: 0.5
+  maxWallHitsBeforeRespawn: 3
+  wallHitWindow: 2
+  xDivergenceFactor: 0.3
 --- !u!114 &700896883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102769,6 +102787,12 @@ MonoBehaviour:
     m_Bits: 1
   flagCaptured: {fileID: 1733885713}
   originalFlag: {fileID: 1740278091}
+  collisionMode: 0
+  bouncePenalty: 0.25
+  respawnPenalty: 0.5
+  maxWallHitsBeforeRespawn: 3
+  wallHitWindow: 2
+  xDivergenceFactor: 0.3
 --- !u!114 &870863417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187605,6 +187629,12 @@ MonoBehaviour:
     m_Bits: 1
   flagCaptured: {fileID: 0}
   originalFlag: {fileID: 0}
+  collisionMode: 0
+  bouncePenalty: 0.25
+  respawnPenalty: 0.5
+  maxWallHitsBeforeRespawn: 3
+  wallHitWindow: 2
+  xDivergenceFactor: 0.3
 --- !u!114 &1597325734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279447,6 +279477,12 @@ MonoBehaviour:
     m_Bits: 1
   flagCaptured: {fileID: 1178191453}
   originalFlag: {fileID: 6656000043811167}
+  collisionMode: 0
+  bouncePenalty: 0.25
+  respawnPenalty: 0.5
+  maxWallHitsBeforeRespawn: 3
+  wallHitWindow: 2
+  xDivergenceFactor: 0.3
 --- !u!114 &7426592590450606492
 MonoBehaviour:
   m_ObjectHideFlags: 0
